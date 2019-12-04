@@ -2,17 +2,25 @@ const inquirer = require('inquirer');
 
 let contactList = [];
 
+let searchContactQuestion = [
+    {
+        type: "input",
+        name: "name",
+        message: "Name:"
+    }
+]
+
 let addContactQuestions = [
     {
         type: "input",
         name: "name",
-        message: "What is your name?",
+        message: "Name:",
         default: () => { return "Johnny No-name" }
     },
     {
         type: "input",
         name: "phone",
-        message: "What is your phone number?"
+        message: "Phone number:"
     }
 ]
 
@@ -24,6 +32,19 @@ let removeContactQuestion = [
         choices: contactList
     }
 ]
+
+function searchContacts() {
+    inquirer.prompt(searchContactQuestion)
+        .then(answer => {
+            for (contact of contactList) {
+                if (contact.name === answer.name) {
+                    console.log(contact.phone);
+                    break;
+                }
+            }
+        })
+        .then(() => run())
+}
 
 function addContact() {
     inquirer.prompt(addContactQuestions)
@@ -56,7 +77,8 @@ function run() {
             name: "selection",
             message: "What would you like to do?",
             choices: [
-                "View contacts",
+                "View all contacts",
+                "Search for a contact",
                 "Add a contact",
                 "Remove a contact",
                 "Quit"
@@ -64,9 +86,11 @@ function run() {
         }
     ])
         .then(response => {
-            if (response.selection === "View contacts") {
+            if (response.selection === "View all contacts") {
                 console.log(contactList);
                 run();
+            } else if (response.selection === "Search for a contact") {
+                searchContacts();
             } else if (response.selection === "Add a contact") {
                 addContact();
             } else if (response.selection === "Remove a contact") {
