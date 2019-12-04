@@ -39,10 +39,11 @@ function searchContacts() {
         .then(answer => {
             for (contact of contactList) {
                 if (contact.name === answer.name) {
-                    console.log(contact.phone);
-                    break;
+                    console.log(`${answer.name}: ${contact.phone}`);
+                    return;
                 }
             }
+            console.log("There was no contact by that name");
         })
         .then(() => run())
 }
