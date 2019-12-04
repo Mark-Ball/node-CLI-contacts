@@ -72,6 +72,11 @@ function removeContact() {
         .then(() => run())
 }
 
+function noContactToRemove() {
+    console.log("There are no contacts to remove");
+    run();
+}
+
 function writeContacts() {
     fs.writeFile('contacts.json', JSON.stringify(contactList, null, 2), function(err) {
         if (err) throw err;
@@ -103,7 +108,7 @@ function run() {
             } else if (response.selection === "Add a contact") {
                 addContact();
             } else if (response.selection === "Remove a contact") {
-                contactList.length === 0 ? console.log("There are no contacts to remove") : removeContact();
+                contactList.length === 0 ? noContactToRemove() : removeContact();
             } else {
                 return
             }
