@@ -1,4 +1,5 @@
 const inquirer = require('inquirer');
+const fs = require('fs');
 
 let contactList = [];
 
@@ -51,6 +52,7 @@ function addContact() {
         .then(answers => {
             contactList.push(answers);
             console.log(contactList);
+            writeContacts();
         })
         .then(() => run())
 }
@@ -68,6 +70,13 @@ function removeContact() {
             })
         })
         .then(() => run())
+}
+
+function writeContacts() {
+    fs.writeFile('contacts.json', JSON.stringify(contactList, null, 2), function(err) {
+        if (err) throw err;
+        console.log("Contacts updated");
+    })
 }
 
 function run() {
