@@ -84,7 +84,18 @@ function writeContacts() {
     })
 }
 
+function readContacts() {
+    fs.readFile('contacts.json', 'utf-8', function(err, data) {
+        if (err) {
+            console.log(err);
+            return;
+        }
+        contactList = JSON.parse(data);
+    });
+}
+
 function run() {
+    readContacts();
     inquirer.prompt([
         {
             type: "list",
