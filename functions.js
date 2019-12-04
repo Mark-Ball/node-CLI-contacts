@@ -1,10 +1,6 @@
 const inquirer = require('inquirer');
 
-let contactList = [
-    { name: "Mark", phone: '0431321341' },
-    { name: "Ellie", phone: '0421567321' },
-    { name: "Ricky", phone: '0481942422' }
-];
+let contactList = [];
 
 let addContactQuestions = [
     {
@@ -35,6 +31,7 @@ function addContact() {
             contactList.push(answers);
             console.log(contactList);
         })
+        .then(() => run())
 }
 
 function removeContact() {
@@ -49,10 +46,32 @@ function removeContact() {
                 }
             })
         })
+        .then(() => run())
 }
 
-module.exports = {
-    addContact,
-    removeContact,
-    contactList
+function run() {
+    inquirer.prompt([
+        {
+            type: "list",
+            name: "selection",
+            message: "What would you like to do?",
+            choices: [
+                "View contacts",
+                "Add a contact",
+                "Remove a contact"
+            ]
+        }
+    ])
+        .then(response => {
+            if (response.selection === "View contacts") {
+                console.log(contactList);
+                run();
+            } else if (response.selection === "Add a contact") {
+                addContact();
+            } else {
+                contactList.length === 0 ? console.log("There are no contacts to remove") : removeContact();
+            }
+        })
 }
+
+module.exports = run;
