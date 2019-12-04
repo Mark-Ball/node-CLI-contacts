@@ -1,7 +1,7 @@
 const inquirer = require('inquirer');
 const fs = require('fs');
 
-let contactList = [];
+let contactList;
 
 let searchContactQuestion = [
     {
@@ -25,15 +25,6 @@ let addContactQuestions = [
     }
 ]
 
-let removeContactQuestion = [
-    {
-        type: "list",
-        name: "name",
-        message: "Which contact would you like to remove?",
-        choices: contactList
-    }
-]
-
 function searchContacts() {
     inquirer.prompt(searchContactQuestion)
         .then(answer => {
@@ -52,13 +43,21 @@ function addContact() {
     inquirer.prompt(addContactQuestions)
         .then(answers => {
             contactList.push(answers);
-            console.log(contactList);
             writeContacts();
         })
         .then(() => run())
 }
 
 function removeContact() {
+    let removeContactQuestion = [
+        {
+            type: "list",
+            name: "name",
+            message: "Which contact would you like to remove?",
+            choices: contactList
+        }
+    ]
+
     inquirer.prompt(removeContactQuestion)
         .then(answer => {
             // to delete a contact from the array
@@ -67,6 +66,8 @@ function removeContact() {
             contactList.forEach((obj, i) => {
                 if (obj.name === answer.name) {
                     contactList.splice(i, 1);
+                    writeContacts();
+                    return;
                 }
             })
         })
