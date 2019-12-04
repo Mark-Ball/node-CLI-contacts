@@ -58,7 +58,8 @@ function run() {
             choices: [
                 "View contacts",
                 "Add a contact",
-                "Remove a contact"
+                "Remove a contact",
+                "Quit"
             ]
         }
     ])
@@ -68,8 +69,10 @@ function run() {
                 run();
             } else if (response.selection === "Add a contact") {
                 addContact();
-            } else {
+            } else if (response.selection === "Remove a contact") {
                 contactList.length === 0 ? console.log("There are no contacts to remove") : removeContact();
+            } else {
+                return
             }
         })
 }
